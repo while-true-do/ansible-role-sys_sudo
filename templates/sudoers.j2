@@ -1,0 +1,30 @@
+## {{ ansible_managed }}
+## Sudoers allows particular users to run various commands as
+## the root user, without needing the root password.
+
+# Defaults specification
+Defaults   !visiblepw
+
+{% if wtd_sys_sudo_defaults.pwfeedback %}Defaults    pwfeedback{% endif %}
+{% if wtd_sys_sudo_defaults.lecture is defined %}Defaults    lecture = {{ wtd_sys_sudo_defaults.lecture }}{% endif %}
+{% if wtd_sys_sudo_defaults.lecture_file is defined %}Defaults    lecture_file = {{ wtd_sys_sudo_defaults.lecture_file }}{% endif %}
+{% if wtd_sys_sudo_defaults.env_reset %}
+Defaults    env_reset
+
+Defaults    env_keep =  "COLORS DISPLAY HOSTNAME HISTSIZE KDEDIR LS_COLORS"
+Defaults    env_keep += "MAIL PS1 PS2 QTDIR USERNAME LANG LC_ADDRESS LC_CTYPE"
+Defaults    env_keep += "LC_COLLATE LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES"
+Defaults    env_keep += "LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER LC_TELEPHONE"
+Defaults    env_keep += "LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY"
+{% endif %}
+
+Defaults    secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+## root user
+root {{ wtd_sys_sudo_root.host }} = ({{ wtd_sys_sudo_root.runas }}) {% if wtd_sys_sudo_root.tag is defined %} {{ wtd_sys_sudo_root.tag }}: {% endif %} {{ wtd_sys_sudo_root.cmnd }}
+
+## wheel group
+%wheel {{ wtd_sys_sudo_wheel.host }} = ({{ wtd_sys_sudo_wheel.runas }}) {% if wtd_sys_sudo_wheel.tag is defined %} {{ wtd_sys_sudo_wheel.tag }}: {% endif %} {{ wtd_sys_sudo_wheel.cmnd }}
+
+## Read drop-in files from /etc/sudoers.d (the # here does not mean a comment)
+#includedir /etc/sudoers.d

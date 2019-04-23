@@ -1,0 +1,12 @@
+## {{ ansible_managed }}
+## Sudoers allows particular users to run various commands as
+## the root user, without needing the root password.
+
+# User, Group, Netgroup specification
+{% if item.user is defined %}
+{{ item.user }} {{ item.host }} = ({{ item.runas }}) {% if item.tag is defined %}{{ item.tag }}:{% endif %} {{ item.cmnd }}
+{% elif item.group is defined %}
+%{{ item.group }} {{ item.host }} = ({{ item.runas }}) {% if item.tag is defined %}{{ item.tag }}:{% endif %} {{ item.cmnd }}
+{% elif item.netgroup is defined %}
++{{ item.netgroup }} {{ item.host }} = ({{ item.runas }}) {% if item.tag is defined %}{{ item.tag }}:{% endif %} {{ item.cmnd }}
+{% endif %}

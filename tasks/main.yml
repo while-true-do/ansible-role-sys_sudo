@@ -1,0 +1,40 @@
+---
+# tasks file for while_true_do.sys_sudo
+
+- name: Manage sudo Packages
+  package:
+    name: "{{ wtd_sys_sudo_package }}"
+    state: "{{ wtd_sys_sudo_package_state }}"
+  become: true
+  tags:
+    - sudo
+    - package
+
+- name: Configure sudo users in /etc/sudoers
+  template:
+    src: sudoers.j2
+    dest: /etc/sudoers
+    mode: 0400
+    owner: root
+    group: root
+    validate: visudo -cf %s
+  when: wtd_sys_sudo_package_state != "absent"
+  tags:
+    - sudo
+    - configuration
+
+- name: Configure sudo users in /etc/sudoers.d/*
+  template:
+    src: sudoers.d.j2
+    dest: "/etc/sudoers.d/{{ item.name }}"
+    mode: 0400
+    owner: root
+    group: root
+    validate: visudo -cf %s
+  loop: "{{ wtd_sys_sudo_sudoers }}"
+  become: yes
+  when: wtd_sys_sudo_package_state != "absent" and
+        wtd_sys_sudo_sudoers is defined
+  tags:
+    - sudo
+    - configuration

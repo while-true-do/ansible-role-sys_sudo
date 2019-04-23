@@ -1,0 +1,55 @@
+---
+# defaults file for while_true_do.sys_sudo
+
+wtd_sys_sudo_package: "sudo"
+# State can be present|latest|absent
+wtd_sys_sudo_package_state: "present"
+
+# Configure the sudo defaults
+wtd_sys_sudo_defaults:
+  # Reset environment and use env_keep
+  env_reset: true
+  # Show asterisks, when typing a password
+  pwfeedback: false
+  # optional: lecture can be once|always|never
+  # lecture: "once"
+  # optional: define another lecture message from a file
+  # lecture_file: "/path/to/file"
+
+# Configure the wheel group
+wtd_sys_sudo_wheel:
+  enable: true
+  host: "ALL"
+  runas: "ALL"
+  cmnd: "ALL"
+  # optional: use tag PASSWD|NOPASSWD
+  # tag: ""
+
+# Configure the root user
+wtd_sys_sudo_root:
+  host: "ALL"
+  runas: "ALL"
+  cmnd: "ALL"
+  # optional: use tag PASSWD|NOPASSWD
+  # tag: ""
+
+# Provide additional sudoers, the way you want them.
+#
+# All users|groups will be configured in /etc/sudoers.d/
+#
+# You can use user|group|netgroup, but not all at once.
+#
+# The result will be a lign like:
+# user = (runas) tag: command
+#
+# Please carefully read the usage section in README.md.
+#
+# wtd_sys_sudo_sudoers:
+#   - name: "myname"
+#     user: "myuser"
+#     group: "mygroup"
+#     netgroup: "mynetgroup"
+#     host: "HOST_SPEC"
+#     runas: "RUNAS_SPEC"
+#     cmnd: "COMMAND"
+#     tag: "NOPASSWD|PASSWD"
