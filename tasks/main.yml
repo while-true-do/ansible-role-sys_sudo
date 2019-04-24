@@ -18,6 +18,7 @@
     owner: root
     group: root
     validate: visudo -cf %s
+  become: true
   when: wtd_sys_sudo_package_state != "absent"
   tags:
     - sudo
@@ -32,7 +33,7 @@
     group: root
     validate: visudo -cf %s
   loop: "{{ wtd_sys_sudo_sudoers }}"
-  become: yes
+  become: true
   when: wtd_sys_sudo_package_state != "absent" and
         wtd_sys_sudo_sudoers is defined
   tags:
