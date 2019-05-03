@@ -24,5 +24,8 @@ galaxy_info:
   galaxy_tags:
     - sudo
     - package
+    - user
+    - group
+    - system
 
 dependencies: []
