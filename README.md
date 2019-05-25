@@ -61,12 +61,14 @@ git clone https://github.com/while-true-do/ansible-role-sys_sudo.git while_true_
 ---
 # defaults file for while_true_do.sys_sudo
 
+## Package Management
 wtd_sys_sudo_package: "sudo"
 # State can be present|latest|absent
 wtd_sys_sudo_package_state: "present"
 
+
 # Configure the sudo defaults
-wtd_sys_sudo_defaults:
+wtd_sys_sudo_conf_defaults:
   # Reset environment and use env_keep
   env_reset: true
   # Show asterisks, when typing a password
@@ -77,7 +79,7 @@ wtd_sys_sudo_defaults:
   # lecture_file: "/path/to/file"
 
 # Configure the wheel group
-wtd_sys_sudo_wheel:
+wtd_sys_sudo_conf_wheel:
   enable: true
   host: "ALL"
   runas: "ALL"
@@ -86,7 +88,7 @@ wtd_sys_sudo_wheel:
   # tag: ""
 
 # Configure the root user
-wtd_sys_sudo_root:
+wtd_sys_sudo_conf_root:
   host: "ALL"
   runas: "ALL"
   cmnd: "ALL"
@@ -94,17 +96,11 @@ wtd_sys_sudo_root:
   # tag: ""
 
 # Provide additional sudoers, the way you want them.
-#
 # All users|groups will be configured in /etc/sudoers.d/
-#
 # You can use user|group|netgroup, but not all at once.
-#
 # The result will be a lign like:
 # user = (runas) tag: command
-#
-# Please carefully read the usage section in README.md.
-#
-# wtd_sys_sudo_sudoers:
+wtd_sys_sudo_conf_sudoers: []
 #   - name: "myname"
 #     user: "myuser"
 #     group: "mygroup"
@@ -112,7 +108,7 @@ wtd_sys_sudo_root:
 #     host: "HOST_SPEC"
 #     runas: "RUNAS_SPEC"
 #     cmnd: "COMMAND"
-#     tag: "NOPASSWD|PASSWD"
+#     tag: "PASSWD|NOPASSWD"
 ```
 
 ### Example Playbook

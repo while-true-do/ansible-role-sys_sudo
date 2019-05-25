@@ -8,9 +8,11 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 def test_sudoers_package(host):
     pkg = host.package('sudo')
+
     assert pkg.is_installed
 
 
 def test_sudoers_file(host):
     file = host.file('/etc/sudoers')
+
     assert file.exists

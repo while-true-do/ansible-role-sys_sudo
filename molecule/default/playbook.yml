@@ -3,3 +3,16 @@
   hosts: all
   roles:
     - role: while_true_do.sys_sudo
+      wtd_sys_sudo_conf_wheel:
+        enable: true
+        host: "ALL"
+        runas: "ALL"
+        cmnd: "ALL"
+        tag: "NOPASSWD"
+      wtd_sys_sudo_conf_sudoers:
+        - name: "test"
+          user: "myuser"
+          host: "ALL"
+          runas: "ALL"
+          cmnd: "ALL"
+          tag: "NOPASSWD"

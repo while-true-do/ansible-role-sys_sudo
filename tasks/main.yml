@@ -10,32 +10,33 @@
     - sudo
     - package
 
-- name: Configure sudo users in /etc/sudoers
+- name: Configure sudo users in /etc/sudoers.d/*
   template:
-    src: sudoers.j2
-    dest: /etc/sudoers
+    src: "sudoers.d.j2"
+    dest: "/etc/sudoers.d/{{ item.name }}"
     mode: 0400
-    owner: root
-    group: root
-    validate: visudo -cf %s
+    owner: "root"
+    group: "root"
+    validate: "visudo -cf %s"
+  loop: "{{ wtd_sys_sudo_conf_sudoers }}"
   become: true
-  when: wtd_sys_sudo_package_state != "absent"
+  when:
+    - wtd_sys_sudo_package_state != "absent"
   tags:
     - sudo
     - configuration
 
-- name: Configure sudo users in /etc/sudoers.d/*
+- name: Configure sudo users in /etc/sudoers
   template:
-    src: sudoers.d.j2
-    dest: "/etc/sudoers.d/{{ item.name }}"
+    src: "sudoers.j2"
+    dest: "/etc/sudoers"
     mode: 0400
-    owner: root
-    group: root
-    validate: visudo -cf %s
-  loop: "{{ wtd_sys_sudo_sudoers }}"
+    owner: "root"
+    group: "root"
+    validate: "visudo -cf %s"
   become: true
-  when: wtd_sys_sudo_package_state != "absent" and
-        wtd_sys_sudo_sudoers is defined
+  when:
+    - wtd_sys_sudo_package_state != "absent"
   tags:
     - sudo
     - configuration
